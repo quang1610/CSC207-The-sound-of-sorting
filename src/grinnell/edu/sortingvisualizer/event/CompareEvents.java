@@ -4,8 +4,8 @@ import java.util.List;
 
 public class CompareEvents<T extends Comparable<T>> implements SortEvent<T> {
 
-  public <T extends Comparable<T>> void apply(T[] arr) {
-
+  public void apply(T[] arr) {
+    
   }
   
   public List<Integer> getAffectedIndices() {
