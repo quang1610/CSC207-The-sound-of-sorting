@@ -1,4 +1,4 @@
-package grinnell.edu.sortingvisualizer;
+package grinnell.edu.sortingvisualizer.sort;
 
 import java.util.Arrays;
 import java.util.Random;

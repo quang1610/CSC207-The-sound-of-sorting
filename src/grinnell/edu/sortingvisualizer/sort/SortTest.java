@@ -1,4 +1,4 @@
-package grinnell.edu.sortingvisualizer;
+package grinnell.edu.sortingvisualizer.sort;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
