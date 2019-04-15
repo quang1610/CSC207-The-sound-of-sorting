@@ -1,11 +1,21 @@
 package grinnell.edu.sortingvisualizer.sort;
 
+import grinnell.edu.sortingvisualizer.event.*;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class Sort<T extends Comparable<T>> {
   private static Random r = new Random();
 
+  public static <T extends Comparable<T>> void sortEvent(T[] arr, List<SortEvent<T>> sortEventLst) {
+    Iterator<SortEvent<T>> i = sortEventLst.iterator();
+    while (i.hasNext()) {
+      i.next().apply(arr);
+    }
+  }
+  // *****************************************************************************************************************************************
   // Insertion Sort
   public static <T extends Comparable<T>> T[] insertionSort(T[] arr) {
     int n = arr.length;
