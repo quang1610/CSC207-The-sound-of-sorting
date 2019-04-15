@@ -1,4 +1,4 @@
-package edu.grinnell.sortingvisualizer;
+package grinnell.edu.sortingvisualizer.GUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,9 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import edu.grinnell.sortingvisualizer.sortevents.CompareEvent;
-import edu.grinnell.sortingvisualizer.sortevents.SortEvent;
-import edu.grinnell.sortingvisualizer.sorts.Sorts;
+import grinnell.edu.sortingvisualizer.event.CompareEvent;
+import grinnell.edu.sortingvisualizer.event.SortEvent;
+import grinnell.edu.sortingvisualizer.sort.Sort;
 
 /**
  * The Control Panel houses the GUI for interacting with the Sounds of
@@ -47,15 +47,15 @@ public class ControlPanel extends JPanel {
     private static List<SortEvent<Integer>> generateEvents(String sort, Integer[] arr) {
         switch (sort) {
         case "Selection":
-            return Sorts.selectionSort(arr);
+            return Sort.selectionSort(arr);
         case "Insertion":
-            return Sorts.insertionSort(arr);
+            return Sort.insertionSort(arr);
         case "Bubble":
-            return Sorts.bubbleSort(arr);
+            return Sort.bubbleSort(arr);
         case "Merge":
-            return Sorts.mergeSort(arr);
+            return Sort.mergeSort(arr);
         case("Quick"):
-            return Sorts.quickSort(arr);
+            return Sort.quickSort(arr);
         default:
             throw new IllegalArgumentException("generateEvents");
         }

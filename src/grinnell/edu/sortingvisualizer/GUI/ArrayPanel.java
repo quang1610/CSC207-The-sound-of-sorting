@@ -1,4 +1,4 @@
-package edu.grinnell.sortingvisualizer;
+package grinnell.edu.sortingvisualizer.GUI;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

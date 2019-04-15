@@ -1,4 +1,4 @@
-package edu.grinnell.sortingvisualizer;
+package grinnell.edu.sortingvisualizer.GUI;
 
 /**
  * A collection of indices into a Scale object.
