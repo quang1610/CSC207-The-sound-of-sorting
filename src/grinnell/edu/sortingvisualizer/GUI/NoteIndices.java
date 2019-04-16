@@ -1,17 +1,26 @@
 package grinnell.edu.sortingvisualizer.GUI;
 
+import java.util.Random;
+
 /**
  * A collection of indices into a Scale object.
  * These indices are the subject of the various sorting algorithms
  * in the program.
  */
 public class NoteIndices {
-
+    
+    Integer[] noteArray;
+    boolean[] highlightIndex;
     /**
      * @param n the size of the scale object that these indices map into
      */
     public NoteIndices(int n) {
-        // TODO: fill me in
+        this.noteArray = new Integer[n];
+        this.highlightIndex = new boolean[n];
+        for(int i = 0; i < n; i++) {
+          this.noteArray[i] = i;
+          this.highlightIndex[i] = false;
+        }
     }
     
     /**
@@ -21,13 +30,19 @@ public class NoteIndices {
      * @param n the size of the scale object that these indices map into
      */
     public void initializeAndShuffle(int n) {
-        // TODO: fill me in
+      Random r = new Random();
+        for(int i = 0; i < 2*n; i++) {
+          int ind1 = r.nextInt() % n;
+          int ind2 = r.nextInt() % n;
+          int temp = this.noteArray[ind1];
+          this.noteArray[ind1] = this.noteArray[ind2];
+          this.noteArray[ind2] = temp;
+        }
     }
     
     /** @return the indices of this NoteIndices object */
     public Integer[] getNotes() { 
-        // TODO: fill me in
-        return null;
+        return this.noteArray;
     }
     
     /**
@@ -35,17 +50,18 @@ public class NoteIndices {
      * @param index the index to highlight
      */
     public void highlightNote(int index) {
-        // TODO: fill me in
+        this.highlightIndex[index] = true;
     }
     
     /** @return true if the given index is highlighted */
     public boolean isHighlighted(int index) {
-        // TODO: fill me in
-        return false;
+        return this.highlightIndex[index];
     }
     
     /** Clears all highlighted indices from this collection */
     public void clearAllHighlighted() {
-        // TODO: fill me in
+        for(int i = 0; i < this.noteArray.length; i++) {
+          this.highlightIndex[i] = false;
+        }
     }
 }
