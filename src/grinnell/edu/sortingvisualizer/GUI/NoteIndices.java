@@ -30,10 +30,23 @@ public class NoteIndices {
      * @param n the size of the scale object that these indices map into
      */
     public void initializeAndShuffle(int n) {
+      // re-declare
+      this.noteArray = new Integer[n];
+      this.highlightIndex = new boolean[n];
+      
+      // initialize
+      for(int i = 0; i < n; i++) {
+        this.noteArray[i] = i;
+        this.highlightIndex[i] = false;
+      }
+      
+      // shuffle
       Random r = new Random();
         for(int i = 0; i < 2*n; i++) {
-          int ind1 = r.nextInt() % n;
-          int ind2 = r.nextInt() % n;
+          int ind1 = r.nextInt(n);
+          int ind2 = r.nextInt(n);
+          
+          // swap
           int temp = this.noteArray[ind1];
           this.noteArray[ind1] = this.noteArray[ind2];
           this.noteArray[ind2] = temp;

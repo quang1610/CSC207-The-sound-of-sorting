@@ -24,19 +24,27 @@ public class ArrayPanel extends JPanel {
 
   @Override
   public void paintComponent(Graphics g) {
+    g.clearRect(0, 0, this.getWidth(), this.getHeight());
+    
     int length = notes.getNotes().length;
     int xTemp = 0;
     int yTemp = 0;
     int width = this.getWidth()/length;
     int heightTemp = 0;
     int unitHeight = this.getHeight()/length; 
+    Color color;
     for(int i = 0; i < length; i++) {
       xTemp = i * width;
-      heightTemp = unitHeight * (i + 1);
+      heightTemp = unitHeight * (notes.getNotes()[i] + 1);
       yTemp = this.getHeight() - heightTemp;
       
-      g.setColor(Color.BLUE);
+      color= new Color(notes.getNotes()[i] * 225 / length, 150, 150);
+      g.setColor(color);
       g.fillRect(xTemp, yTemp, width, heightTemp);
+      if(notes.isHighlighted(i)) {
+        g.setColor(Color.YELLOW);
+        g.drawRect(xTemp, yTemp, width, heightTemp);
+      }
     }
   }
 }
