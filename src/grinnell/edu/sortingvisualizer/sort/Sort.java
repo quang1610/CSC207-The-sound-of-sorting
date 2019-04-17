@@ -18,25 +18,44 @@ public class Sort<T extends Comparable<T>> {
   }
 
   // *****************************************************************************************************************************************
-  // Insertion Sort
+ /** 
+  * Insertion Sort
+  * 
+  * @param arr, array to be sorted
+  * @return eventList
+  * @pre arr is not empty
+  * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  */
   public static <T extends Comparable<T>> List<SortEvent<T>> insertionSort(T[] arr) {
+    // create a new ArrayList
     ArrayList<SortEvent<T>> eventList = new ArrayList<SortEvent<T>>();
     int n = arr.length;
+    
     for (int i = 0; i < n; i++) {
       T key = arr[i];
       int j = i - 1;
+      // while j is not less than 0 and key is smaller than arr[j]
       while (j >= 0 && key.compareTo(arr[j]) < 0) {
+        // create a CompareEvent and a SwapEvent, swap arr[j] and arr[j + 1]
         eventList.add(createCompareEvent(i, j));
         swap(arr, j + 1, j);
         eventList.add(createSwapEvent(j + 1, j));
         j--;
       }
     }
+    // return the record of comparisons and swaps
     return eventList;
   }
 
   // *****************************************************************************************************************************************
-  // Selection Sort
+ /** 
+  * Selection Sort
+  * 
+  * @param arr, array to be sorted
+  * @return eventList
+  * @pre arr is not empty
+  * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  */
   public static <T extends Comparable<T>> List<SortEvent<T>> selectionSort(T[] arr) {
     ArrayList<SortEvent<T>> eventList = new ArrayList<SortEvent<T>>();
     int n = arr.length;
@@ -57,8 +76,14 @@ public class Sort<T extends Comparable<T>> {
   }
 
   // *****************************************************************************************************************************************
-  // Merge Sort
-
+ /** 
+  * Merge Sort
+  * 
+  * @param arr, array to be sorted
+  * @return eventList
+  * @pre arr is not empty
+  * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  */
   @SuppressWarnings("unchecked")
   public static <T extends Comparable<T>> List<SortEvent<T>> mergeSort(T[] arr) {
     // some set up. Temp is an array to reduce the space complexity, it is the temporary array to
@@ -82,6 +107,15 @@ public class Sort<T extends Comparable<T>> {
     }
   }
 
+ /** 
+  * Helper function for merge sort that recursively splits the array into subarrays
+  * 
+  * @param arr, array to be sorted
+  * @param start, the start index
+  * @param end, the end index
+  * @pre arr is not empty
+  * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  */
   private static <T extends Comparable<T>> void splitForMergeSort(T[] arr, int start, int end,
       T[] temp, List<SortEvent<T>> eventList) {
     int mid = (start + end) / 2;
@@ -92,6 +126,14 @@ public class Sort<T extends Comparable<T>> {
     }
   }
 
+ /** 
+  * Helper function for merge sort that merges already sorted subarrays
+  * 
+  * @param arr, array to be sorted
+  * @return eventList
+  * @pre arr is not empty
+  * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  */
   private static <T extends Comparable<T>> void merge(T[] arr, int start, int mid, int end,
       T[] temp, List<SortEvent<T>> eventList) {
     int counter1 = 0;
@@ -100,39 +142,54 @@ public class Sort<T extends Comparable<T>> {
     while (start + counter1 < mid && mid + counter2 < end) {
       eventList.add(createCompareEvent(start + counter1, mid + counter2));
       if (arr[start + counter1].compareTo(arr[mid + counter2]) <= 0) {
-        // need some review (temp copy)
         temp[start + counter1 + counter2] = arr[start + counter1];
         counter1++;
       } else {
         temp[start + counter1 + counter2] = arr[mid + counter2];
         counter2++;
-      }
-    }
+      } // if/else
+    } // while
 
     while (start + counter1 < mid) {
       temp[start + counter1 + counter2] = arr[start + counter1];
       counter1++;
-    }
+    } // while
 
     while (mid + counter2 < end) {
       temp[start + counter1 + counter2] = arr[mid + counter2];
       counter2++;
-    }
+    } // while
 
+    // copy the contents of the temporary array into arr
     for (int i = 0; i < end - start; i++) {
       eventList.add(createCopyEvent(start + i, temp[start + i]));
       arr[start + i] = temp[start + i];
-    }
+    } // for copy
   }
 
   // *****************************************************************************************************************************************
-  // Quick Sort
+ /** 
+  * Quick Sort
+  * 
+  * @param arr, array to be sorted
+  * @return eventList
+  * @pre arr is not empty
+  * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  */
   public static <T extends Comparable<T>> List<SortEvent<T>> quickSort(T[] arr) {
     ArrayList<SortEvent<T>> eventList = new ArrayList<SortEvent<T>>();
     quickSortHelper(arr, 0, arr.length, eventList);
     return eventList;
   }
 
+ /** 
+  * Helper function for quick sort which sorts the given array
+  * 
+  * @param arr, array to be sorted
+  * @return eventList
+  * @pre arr is not empty
+  * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  */
   private static <T extends Comparable<T>> void quickSortHelper(T[] arr, int start, int end, List<SortEvent<T>> eventList) {
     if (end - start == 2) {
       eventList.add(createCompareEvent(start, end - 1));
