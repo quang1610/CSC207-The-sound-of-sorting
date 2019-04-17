@@ -132,9 +132,6 @@ public class ControlPanel extends JPanel {
         }
         isSorting = true;
 
-        // TODO: fill me in
-        // 1. Create the sorting events list
-        // 2. Add in the compare events to the end of the list
         List<SortEvent<Integer>> events =
             generateEvents((String) sorts.getSelectedItem(), notes.getNotes());
 
