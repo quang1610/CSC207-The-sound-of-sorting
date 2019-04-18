@@ -46,14 +46,16 @@ public class ArrayPanel extends JPanel {
       yTemp = this.getHeight() - heightTemp;
       // The color of the bar changes depending on the height.
       color = new Color(notes.getNotes()[i] * 225 / length, 150, 150);
-      g.setColor(color);
       
-      // draw a filled rectangle
-      g.fillRect(xTemp, yTemp, width, heightTemp);
-      // if the note is highlighted, outline the rectangle with yellow
+      // if the node is highlight, draw the node in yellow, else draw the node with normal color.
       if(notes.isHighlighted(i)) {
         g.setColor(Color.YELLOW);
-        g.drawRect(xTemp, yTemp, width, heightTemp);
+        //g.drawRect(xTemp, yTemp, width, heightTemp);
+      } else {
+        g.setColor(color);
+      }
+      // draw a filled rectangle
+      g.fillRect(xTemp, yTemp, width, heightTemp);
       }
     }
   }

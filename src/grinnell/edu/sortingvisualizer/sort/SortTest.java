@@ -51,6 +51,17 @@ class SortTest {
 
   // ******************************************************************************************************************************************
   // Helper Methods
+  /**
+   * return true if:
+   * 
+   * - both array has the same length
+   * 
+   * - and at each index, the element of of arr1 is equal to element of arr2 by using compareTo().
+   * 
+   * @param arr1, the first array.
+   * @param arr2, the second array.
+   * @return boolean, true or false.
+   */
   private static <T extends Comparable<T>> boolean compareArray(T[] arr1, T[] arr2) {
     if (arr1.length != arr2.length) {
       return false;
@@ -65,6 +76,15 @@ class SortTest {
   }
 
   @SuppressWarnings("unchecked")
+  /**
+   * Test sorting method on randomly generated array with length = arrLength, for repetition times.
+   * message contains the information about the sort method.
+   * 
+   * @param sorter, Consumer<T[]> the sorting method we pass in.
+   * @param arrLength, int, the length of the randomly generated array.
+   * @param repetition, int, the number of time we repeat testing.
+   * @param message, String, the information about the sorting method being test.
+   */
   private <T extends Comparable<T>> void randomTest(Consumer<T[]> sorter, int arrLength,
       int repetition, String message) {
     Integer[] arr = new Integer[arrLength];
@@ -80,6 +100,13 @@ class SortTest {
   }
 
   @SuppressWarnings("unchecked")
+  /**
+   * Test sorting method on predefined arrays. message contains the information about the sort
+   * method.
+   * 
+   * @param sorter, Consumer<T[]> the sorting method we pass in.
+   * @param message, String, the information about the sorting method being test.
+   */
   private <T extends Comparable<T>> void specificTest(Consumer<T[]> sorter, String message) {
     ArrayList<Integer[]> arrays = new ArrayList<Integer[]>();
     Integer[] arr0 = new Integer[] {1};
@@ -101,6 +128,14 @@ class SortTest {
     }
   }
 
+  /**
+   * Apply the sort the arr, then compare the result with sorted same array using java build in
+   * Arrays.sort().
+   * 
+   * @param arr, T[], the array being sorted.
+   * @param sorter, <Consumer<T>, the sorting method we passed in.
+   * @param message, String, the information about the sorting method being test.
+   */
   private <T extends Comparable<T>> void testByNormalSort(T[] arr, Consumer<T[]> sorter,
       String message) {
     T[] temp = (T[]) Arrays.copyOf(arr, arr.length);
