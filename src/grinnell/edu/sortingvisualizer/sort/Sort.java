@@ -25,6 +25,7 @@ public class Sort<T extends Comparable<T>> {
   * @return eventList
   * @pre arr is not empty
   * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  * @post arr is a sorted permutation of the input arr
   */
   public static <T extends Comparable<T>> List<SortEvent<T>> insertionSort(T[] arr) {
     // create a new ArrayList
@@ -36,7 +37,7 @@ public class Sort<T extends Comparable<T>> {
       int j = i - 1;
       // while j is not less than 0 and key is smaller than arr[j]
       while (j >= 0 && key.compareTo(arr[j]) < 0) {
-        // create a CompareEvent and a SwapEvent, swap arr[j] and arr[j + 1]
+        // add a CompareEvent and a SwapEvent to eventList, swap arr[j] and arr[j + 1]
         eventList.add(createCompareEvent(i, j));
         swap(arr, j + 1, j);
         eventList.add(createSwapEvent(j + 1, j));
@@ -55,6 +56,7 @@ public class Sort<T extends Comparable<T>> {
   * @return eventList
   * @pre arr is not empty
   * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  * @post arr is a sorted permutation of the input arr
   */
   public static <T extends Comparable<T>> List<SortEvent<T>> selectionSort(T[] arr) {
     ArrayList<SortEvent<T>> eventList = new ArrayList<SortEvent<T>>();
@@ -63,12 +65,14 @@ public class Sort<T extends Comparable<T>> {
     for (int i = 0; i < n - 1; i++) {
       int minInd = i;
       for (int j = i + 1; j < n; j++) {
-        // update minInd index if element at minInd is > element at j
+        // add CompareEvent to eventList
         eventList.add(createCompareEvent(minInd, j));
+        // update minInd index if element at minInd is > element at j
         if (arr[minInd].compareTo(arr[j]) > 0) {
           minInd = j;
         }
       }
+      // add SwapEvent to eventList and swap arr[minInd] with arr[i]
       eventList.add(createSwapEvent(minInd, i));
       swap(arr, minInd, i);
     }
@@ -81,8 +85,8 @@ public class Sort<T extends Comparable<T>> {
   * 
   * @param arr, array to be sorted
   * @return eventList
-  * @pre arr is not empty
   * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  * @post arr is a sorted permutation of the input arr
   */
   @SuppressWarnings("unchecked")
   public static <T extends Comparable<T>> List<SortEvent<T>> mergeSort(T[] arr) {
@@ -97,8 +101,10 @@ public class Sort<T extends Comparable<T>> {
     int end = n;
     int mid = (start + end) / 2;
 
+    // if the array is empty, return the eventList
     if (end - start < 1) {
       return eventList;
+      // otherwise, run the helper functions to sort and return the eventList
     } else {
       splitForMergeSort(arr, start, mid, temp, eventList);
       splitForMergeSort(arr, mid, end, temp, eventList);
@@ -111,14 +117,18 @@ public class Sort<T extends Comparable<T>> {
   * Helper function for merge sort that recursively splits the array into subarrays
   * 
   * @param arr, array to be sorted
-  * @param start, the start index
-  * @param end, the end index
-  * @pre arr is not empty
+  * @param start, inclusive start index
+  * @param end, exclusive end index
+  * @param eventList
+  * @pre start <= end
   * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  * @post arr is a sorted permutation of the input arr
   */
   private static <T extends Comparable<T>> void splitForMergeSort(T[] arr, int start, int end,
       T[] temp, List<SortEvent<T>> eventList) {
     int mid = (start + end) / 2;
+    
+    // if the array is not empty, recursively split the list, then merge and sort
     if (end - start > 1) {
       splitForMergeSort(arr, start, mid, temp, eventList);
       splitForMergeSort(arr, mid, end, temp, eventList);
@@ -130,17 +140,26 @@ public class Sort<T extends Comparable<T>> {
   * Helper function for merge sort that merges already sorted subarrays
   * 
   * @param arr, array to be sorted
+  * @param start, inclusive start index
+  * @param mid, mid index
+  * @param end, exclusive end index
+  * @param temp
+  * @param eventList
   * @return eventList
-  * @pre arr is not empty
+  * @pre start <= mid <= end < arr.length
   * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  * @post arr is a sorted permutation of the input arr
   */
   private static <T extends Comparable<T>> void merge(T[] arr, int start, int mid, int end,
       T[] temp, List<SortEvent<T>> eventList) {
     int counter1 = 0;
     int counter2 = 0;
 
+    // the loop continues while the functions apply on subsections of arr from start to mid 
+    // and from mid to end
     while (start + counter1 < mid && mid + counter2 < end) {
       eventList.add(createCompareEvent(start + counter1, mid + counter2));
+      // copy elements in a sorted order into the temp array
       if (arr[start + counter1].compareTo(arr[mid + counter2]) <= 0) {
         temp[start + counter1 + counter2] = arr[start + counter1];
         counter1++;
@@ -150,11 +169,15 @@ public class Sort<T extends Comparable<T>> {
       } // if/else
     } // while
 
+    // if the first loop has finished with the mid to end subsection, finish copying sorted
+    // elements from the start to mid subsection
     while (start + counter1 < mid) {
       temp[start + counter1 + counter2] = arr[start + counter1];
       counter1++;
     } // while
 
+    // if the first loop has finished with the start to mid subsection, finish copying sorted
+    // elements from the mid to end subsection
     while (mid + counter2 < end) {
       temp[start + counter1 + counter2] = arr[mid + counter2];
       counter2++;
@@ -173,8 +196,8 @@ public class Sort<T extends Comparable<T>> {
   * 
   * @param arr, array to be sorted
   * @return eventList
-  * @pre arr is not empty
   * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  * @post arr is a sorted permutation of the input arr
   */
   public static <T extends Comparable<T>> List<SortEvent<T>> quickSort(T[] arr) {
     ArrayList<SortEvent<T>> eventList = new ArrayList<SortEvent<T>>();
@@ -186,19 +209,24 @@ public class Sort<T extends Comparable<T>> {
   * Helper function for quick sort which sorts the given array
   * 
   * @param arr, array to be sorted
+  * @param start, inclusive start index
+  * @param end, exclusive end index
+  * @param eventList
   * @return eventList
-  * @pre arr is not empty
   * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  * @post arr is a sorted permutation of the input arr
   */
   private static <T extends Comparable<T>> void quickSortHelper(T[] arr, int start, int end, List<SortEvent<T>> eventList) {
+    // if the subsection from start to end contains only two elements, compare them and swap if necessary
     if (end - start == 2) {
       eventList.add(createCompareEvent(start, end - 1));
       if (arr[start].compareTo(arr[end - 1]) > 0) {
         eventList.add(createSwapEvent(start, end - 1));
         swap(arr, start, end - 1);
       }
+      // otherwise, if the subsection contains more than two elements...
     } else if (end - start > 1) {
-      // find the pivot index, and swap it to the end of the arr temporary
+      // ...find the pivot index, and swap it to the end of the arr temporary
       int pivotInd = start + r.nextInt(end - start);
       int lastInd = end - 1;
       eventList.add(createSwapEvent(pivotInd, lastInd));
@@ -207,6 +235,7 @@ public class Sort<T extends Comparable<T>> {
       int left = start;
       int right = lastInd - 1;
 
+      // check whether the right and left values are >, <, or == the pivot and swap/don't swap accordingly
       while (right - left > 1) {
         while (arr[left].compareTo(arr[lastInd]) < 0 && left < lastInd - 1) {
           eventList.add(createCompareEvent(left, lastInd));
@@ -224,13 +253,14 @@ public class Sort<T extends Comparable<T>> {
         }
       }
 
+      // once there is one remaining element in the subsection, check whether it needs to be swapped
       eventList.add(createCompareEvent(left, right));
       if (arr[left].compareTo(arr[right]) > 0 && right - left == 1) {
         eventList.add(createSwapEvent(left, right));
         swap(arr, left, right);
       }
 
-      // swap the pivot back to the place where it is
+      // swap the pivot into its place in the array
       if (arr[left].compareTo(arr[lastInd]) >= 0) {
         eventList.add(createCompareEvent(left, lastInd));
         eventList.add(createSwapEvent(left, lastInd));
@@ -250,17 +280,26 @@ public class Sort<T extends Comparable<T>> {
         right = lastInd;
       }
 
+      // recurse until sorted
       quickSortHelper(arr, start, right, eventList);
       quickSortHelper(arr, right + 1, end, eventList);
     }
   }
 
   // ****************************************************************************************************************************************
-  // Bubble Sort
+  /** 
+  * Bubble Sort
+  * 
+  * @param arr, array to be sorted
+  * @return eventList
+  * @post eventList contains CompareEvents and SwapEvents in the order they occurred
+  * @post arr is a sorted permutation of the input arr
+  */
   public static <T extends Comparable<T>> List<SortEvent<T>> bubbleSort(T[] arr) {
     ArrayList<SortEvent<T>> eventList = new ArrayList<SortEvent<T>>();
     int n = arr.length;
 
+    // check each element against every element with a higher index and swap/don't swap accordingly
     for (int i = 0; i < n - 1; i++) {
       for (int j = 0; j < n - i - 1; j++) {
         eventList.add(createCompareEvent(j, j + 1));
@@ -274,13 +313,35 @@ public class Sort<T extends Comparable<T>> {
   }
 
   // ****************************************************************************************************************************************
-  // helper method
+  // Helpers
+  
+  /** 
+  * Helper function to swap elements
+  * 
+  * @param arr
+  * @param i, an index
+  * @param j, an index
+  * @pre i and j are both < arr.length
+  * @pre arr is not empty
+  * @post the element that was at arr[j] is now at arr[i] and vice versa
+  */
   private static <T extends Comparable<T>> void swap(T[] arr, int i, int j) {
     T temp = arr[j];
     arr[j] = arr[i];
     arr[i] = temp;
   }
 
+  /** 
+  * Helper function to create CompareEvents
+  * 
+  * @param arr
+  * @param firstInd, the index of an element being compared
+  * @param secondInd, the index of an element being compared
+  * @return cmpEvent
+  * @pre firstInd and secondInd are both < arr.length
+  * @pre arr is not empty
+  * @post cmpEvent contains the indices of which elements were compared
+  */
   private static <T extends Comparable<T>> CompareEvent<T> createCompareEvent(int firstInd,
       int secondInd) {
     ArrayList<Integer> ind = new ArrayList<Integer>();
@@ -291,6 +352,17 @@ public class Sort<T extends Comparable<T>> {
     return cmpEvent;
   }
 
+  /** 
+  * Helper function to create SwapEvents
+  * 
+  * @param arr
+  * @param firstInd, the index of an element being swapped
+  * @param secondInd, the index of an element being swapped
+  * @return swapEvent
+  * @pre firstInd and secondInd are both < arr.length
+  * @pre arr is not empty
+  * @post swapEvent contains the indices of which elements were swapped
+  */
   private static <T extends Comparable<T>> SwapEvent<T> createSwapEvent(int firstInd,
       int secondInd) {
     ArrayList<Integer> ind = new ArrayList<Integer>();
@@ -301,6 +373,17 @@ public class Sort<T extends Comparable<T>> {
     return swapEvent;
   }
 
+  /** 
+  * Helper function to create CopyEvents
+  * 
+  * @param arr
+  * @param firstInd, the index of an element being copied
+  * @param secondInd, the index of an element being copied
+  * @return copyEvent
+  * @pre firstInd and secondInd are both < arr.length
+  * @pre arr is not empty
+  * @post copyEvent contains the indices of which elements were copied
+  */
   private static <T extends Comparable<T>> CopyEvent<T> createCopyEvent(int firstInd, T value) {
     ArrayList<Integer> ind = new ArrayList<Integer>();
     ind.add(firstInd);
