@@ -4,7 +4,7 @@ This project is a *visualizer* and *audibilizer* for sorting algorithms using Ja
 To run the program, user choose a sorting algorithm (out of 4), audio scale (Pentatonic or Chromatic), and problem size (big or small).
 
 # Demo
-![Sorting visualizer](Sorting-Visual-Demo.GIF)
+![Sorting visualizer](Sorting-Visual-demo.gif)
 
 # How to run?
 The **main()** function is in src/grinnell/edu/sortingvisualizer/GUI/SortingVisualizer.java. We also provide runable jar file and Mac OS X application bundle.
