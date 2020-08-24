@@ -10,9 +10,9 @@ To run the program, user choose a sorting algorithm (out of 4), audio scale (Pen
 The **main()** function is in src/grinnell/edu/sortingvisualizer/GUI/SortingVisualizer.java. We also provide runable jar file and Mac OS X application bundle.
 
 # Contributors: 
-Matthew Palmeri: palmerim@grinnell.edu
-Hannah Cha: chahannah@grinnell.edu
-Quang Nguyen: nguyenqu2@grinnell.edu
+- Matthew Palmeri: palmerim@grinnell.edu
+- Hannah Cha: chahannah@grinnell.edu
+- Quang Nguyen: nguyenqu2@grinnell.edu
 
 citation: 
 
